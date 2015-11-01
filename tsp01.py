@@ -2,6 +2,7 @@
 import sys, math, re, time
 import multiprocessing as mp
 import thread
+import tsp01_tp
 
 class minMax(object):
 	def __init__(points, minX, maxX, minY, maxY, numCities):
@@ -73,13 +74,8 @@ def distributeCities(fullCityList, minMax):
 		xInterval = numProcs / divisor
 		yInterval = divisor
 
-	print "The xInterval is: " + str(xInterval)
-	print "The yInterval is: " + str(yInterval)
-
 	rangeX = minMax.maxX - minMax.minX
 	rangeY = minMax.maxY - minMax.minY
-	print "rangeX: " + str(rangeX)
-	print "rangeY: " + str(rangeY)
 
 	sectorDistX = rangeX / xInterval
 	sectorDistY = rangeY / yInterval
@@ -87,35 +83,35 @@ def distributeCities(fullCityList, minMax):
 	sdXRemainder = rangeX % xInterval
 	sdYRemainder = rangeY % yInterval
 
-	print
-	print "sdXRemainder: %d" % (sdXRemainder)
-	print "sdYRemainder: %d" % (sdYRemainder)
-	print 
-
+	# Declare Sector Extents.
 	sectorExtents = []
-	
-	for x in range(0, xInterval):
-		for y in range(0, yInterval):
-			print "Inner for loop"
-			#curSector.append(minMax.minX)
-			#curSector.append((x * sectorDistX) + sectorDistX + minMax.minX)
-			#curSector.append(minMax.minY)
-			#curSector.append((y * sectorDistY) + sectorDistY + minMax.minY)
-			#print "curSector minX: %d, maxX: %d, minY: %d, maxY: %d" % (curSector[0], curSector[1], curSector[2], curSector[3])
 
+	# Local variables to work with before adding them to the sector extents list.
+	localMinX = 0
+	localMaxX = 0
+	localMinY = 0
+	localMaxY = 0
 
-	sectorExtents.append(curSector(5, 6, 7, 8))
+	for i in range(0, xInterval):
+		# Now calculate the X coordinate sector values
+		localMinX = (i * sectorDistX) + minMax.minX
+		localMaxX = localMinX + sectorDistX
+		#Calculate the Y values for the sector.
+		for z in range(0, yInterval):
+			localMinY = (z * sectorDistY) + minMax.minY
+			localMaxY = localMinY + sectorDistY
+			if (z == (yInterval - 1)):
+				localMaxY += sdYRemainder
+			sectorExtents.append(curSector(localMinX, localMaxX, localMinY, localMaxY))
+		# Reset the values for the next sector
+		localMaxY = 0
 
-	print 
-	print "The sector extents are: " + str(sectorExtents[0].secMinX) + str(sectorExtents[0].secMaxX)
-	print
+	citiesDistributed = sectorExtents
 
-	print
-	print "sectorDistx " + str(sectorDistX)
-	print "sectorDisty " + str(sectorDistY)
-	print
+	# Begin distributing cities to the different arrays.
 
-	return numProcs
+	#This is going to be replaced with the array of sectors and their boundaries.
+	return citiesDistributed
 
 def main(args):
 	#Introduction message.
@@ -140,7 +136,9 @@ def main(args):
 	print "MAX Y : " + str(overallMinMax.maxY)
 	print
 
-	cityDistributed = distributeCities(fullCityList, overallMinMax)
+	citiesDistributed = distributeCities(fullCityList, overallMinMax)
+
+	tsp01_tp.printSectors(citiesDistributed)
 
 	#Print the final parting message
 	print
