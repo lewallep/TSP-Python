@@ -16,9 +16,21 @@ class printSectors(object):
 			print "secMaxY: " + str(object[i].secMaxY)
 			print
 
+class printExtents(object):
+	def __init__(self, object):
+		print
+		print "MIN X : " + str(object.minX)
+		print "MAX X : " + str(object.maxX)
+		print
+		print "MIN Y : " + str(object.minY)
+		print "MAX Y : " + str(object.maxY)
+		print
+
 #  Notes on Multithreading tsp01.py
 # Import the list of cities.  
+	#Done.
 # Give each process it's own list to sort from memory
+	
 # Distribute the cities to their proper sectors. In each process.
 # 	This needs to be done in a way so each process is written the same.  
 # Sort the cities for each sector in their own individual process.

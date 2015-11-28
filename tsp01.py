@@ -1,5 +1,5 @@
 #!/usr/bin/python
-import sys, math, re, time
+import sys, math, re, time, os
 import multiprocessing as mp
 import thread
 import tsp01_tp
@@ -29,6 +29,9 @@ def importCities(fname):
 
 	return cityList
 
+# findExtents
+# Prereqruisites: there has to be a list of cities with x and y coordinates.
+# Output: Returns single class object of minMax to the calling function.
 def findExtents(fullCityList):
 
 	minX = 9999999
@@ -53,7 +56,10 @@ def findExtents(fullCityList):
 
 	return extents
 
-def distributeCities(fullCityList, minMax):
+# defineSectors
+# Prerequrisites the minMax class has been defined with the overall range of city coordinates
+# for the list of cities.
+def defineSectors(minMax):
 	# This function will calculate the number of available processors and stuff
 	# it into a 2D list to pass around to other functions.
 	numProcs = mp.cpu_count()
@@ -106,12 +112,18 @@ def distributeCities(fullCityList, minMax):
 		# Reset the values for the next sector
 		localMaxY = 0
 
-	citiesDistributed = sectorExtents
+	return sectorExtents
 
-	# Begin distributing cities to the different arrays.
+def organizeCitiesBySector(citySectors, fullCityList):
+	print "I am in the called function in a process."
+	print "process id inside f " + str(os.getpid())
 
-	#This is going to be replaced with the array of sectors and their boundaries.
-	return citiesDistributed
+def organizeCities(citySectors, fullCityList):
+	p = mp.Process(target = organizeCitiesBySector, args=(citySectors, fullCityList,))
+	p.start()
+	p.join()
+
+	return "Super organized.  Oh yeeeea!"
 
 def main(args):
 	#Introduction message.
@@ -128,17 +140,18 @@ def main(args):
 
 	overallMinMax = findExtents(fullCityList)
 
-	print
-	print "MIN X : " + str(overallMinMax.minX)
-	print "MAX X : " + str(overallMinMax.maxX)
-	print
-	print "MIN Y : " + str(overallMinMax.minY)
-	print "MAX Y : " + str(overallMinMax.maxY)
-	print
+	citySectors = defineSectors(overallMinMax)
 
-	citiesDistributed = distributeCities(fullCityList, overallMinMax)
+	## testing classes
+	# tsp01_tp.printSectors(citiesDistributed)
+    # tsp01_tp.printExtents(overallMinMax)
 
-	tsp01_tp.printSectors(citiesDistributed)
+	# Here is where I will start the multithreading.  
+	citiesSectorOrganized = organizeCitiesBySector(citySectors, fullCityList)
+	print citiesSectorOrganized
+
+
+	organizeCities(citySectors, fullCityList)
 
 	#Print the final parting message
 	print
