@@ -19,6 +19,10 @@ class curSector(object):
 		sector.secMinY = secMinY
 		sector.secMaxY = secMaxY
 
+# Returns a 2D list of cities.  Each city has an ID number, X coordination, Y coordinate
+# Prereqruisite: The list of cities must come from a file with one city
+# on each line separated by a '\n' character.
+
 def importCities(fname):
 	inputFile = open(fname)
 	cityList = []
@@ -120,11 +124,25 @@ def organizeCitiesBySector(citySectors, fullCityList):
 	print "process id inside organizeCitiesBySector " + str(os.getpid())
 	print
 
-	tsp01_tp.printCities(fullCityList)
+	# Declare the container to hold the cities for the designed sector
+	citiesLocalSector = []
 
-	return "organizeCitiesBySector has returned."
+	# Move the Cities to one sector
+	for i in range(0, len(fullCityList)):
+		if citySectors[0].secMinX <= fullCityList[i][1] and \
+				citySectors[0].secMaxX >= fullCityList[i][1] and \
+				citySectors[0].secMinY <= fullCityList[i][2] and \
+				citySectors[0].secMaxY >= fullCityList[i][2]:
+			# If a city is found to be within the sector append to the list for this sector.
+			citiesLocalSector.append(fullCityList[i])
+		
+	# Test print
+	print citiesLocalSector
 
-def organizeCities(citySectors, fullCityList):
+
+	# Use a queue to transfer this list to the calling process.
+
+def organizeCities(citySectors, fullCityList, sectorCount):
 	p = mp.Process(target = organizeCitiesBySector, args = (citySectors, fullCityList,))
 	p.start()
 	p.join()
@@ -135,6 +153,9 @@ def main(args):
 	#Introduction message.
 	print "I have run my main function.  Wow. . . "
 	print
+
+	# For v1.0 the sector count will always equal the cpu count.
+	sectorCount = mp.cpu_count()
 
 	fullCityList = importCities(args[1])
 
@@ -154,7 +175,7 @@ def main(args):
 	# tsp01_tp.printSectors(citiesDistributed)
     # tsp01_tp.printExtents(overallMinMax)
 
-	citiesSectorOrganized = organizeCities(citySectors, fullCityList)
+	citiesSectorOrganized = organizeCities(citySectors, fullCityList, sectorCount)
 
 	#Print the final parting message
 	print
