@@ -26,7 +26,12 @@ class printExtents(object):
 		print "MAX Y : " + str(object.maxY)
 		print
 
-#  Notes on Multithreading tsp01.py
+class printCities(object):
+	def __init__(self, object):
+		for city in object:
+			print str(city[0]) + "\t" + str(city[1]) + "\t" + str(city[2])
+
+# Notes on Multithreading tsp01.py
 # Import the list of cities.  
 	#Done.
 # Give each process it's own list to sort from memory
