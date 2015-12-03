@@ -1,8 +1,8 @@
 #!/usr/bin/python
 import sys, math, re, time, os
 import multiprocessing as mp
-import thread
 import tsp01_tp
+from multiprocessing import Process, Queue
 
 class minMax(object):
 	def __init__(points, minX, maxX, minY, maxY, numCities):
@@ -22,7 +22,6 @@ class curSector(object):
 # Returns a 2D list of cities.  Each city has an ID number, X coordination, Y coordinate
 # Prereqruisite: The list of cities must come from a file with one city
 # on each line separated by a '\n' character.
-
 def importCities(fname):
 	inputFile = open(fname)
 	cityList = []
@@ -119,33 +118,50 @@ def defineSectors(minMax):
 
 	return sectorExtents
 
-def organizeCitiesBySector(citySectors, fullCityList):
-	print "I am in the called function in a process."
-	print "process id inside organizeCitiesBySector " + str(os.getpid())
-	print
+def sortCitiesInSector(citiesLocalSector):
+	print len(citiesLocalSector)
 
+	citiesLocalSorted = citiesLocalSector
+
+	return citiesLocalSorted
+
+def organizeCitiesBySector(citySectors, fullCityList, q, curSector):
 	# Declare the container to hold the cities for the designed sector
 	citiesLocalSector = []
+	# Appending an integer label to identify which sector the cities belong to.
+	citiesLocalSector.append(curSector)
 
 	# Move the Cities to one sector
 	for i in range(0, len(fullCityList)):
-		if citySectors[0].secMinX <= fullCityList[i][1] and \
-				citySectors[0].secMaxX >= fullCityList[i][1] and \
-				citySectors[0].secMinY <= fullCityList[i][2] and \
-				citySectors[0].secMaxY >= fullCityList[i][2]:
+		if citySectors[curSector].secMinX <= fullCityList[i][1] and \
+				citySectors[curSector].secMaxX >= fullCityList[i][1] and \
+				citySectors[curSector].secMinY <= fullCityList[i][2] and \
+				citySectors[curSector].secMaxY >= fullCityList[i][2]:
 			# If a city is found to be within the sector append to the list for this sector.
 			citiesLocalSector.append(fullCityList[i])
 		
-	# Test print
-	print citiesLocalSector
-
+	citiesLocalSorted = sortCitiesInSector(citiesLocalSector)
 
 	# Use a queue to transfer this list to the calling process.
+	q.put(citiesLocalSorted)
+
 
 def organizeCities(citySectors, fullCityList, sectorCount):
-	p = mp.Process(target = organizeCitiesBySector, args = (citySectors, fullCityList,))
-	p.start()
-	p.join()
+	# Declare an empty list to hold the processes as they get created.
+	allCitiesSectors = []
+	q = Queue()
+
+	for i in range(0, sectorCount):	
+		curSector = i
+		p = mp.Process(target = organizeCitiesBySector, args = (citySectors, fullCityList, q, curSector, ))
+		p.start()
+		allCitiesSectors.append(q.get())
+
+	for i in range(1, sectorCount):
+		p.join()
+
+	for i in range(0, sectorCount):
+		print allCitiesSectors[i]
 
 	return "Super organized.  Oh yeeeea!"
 
