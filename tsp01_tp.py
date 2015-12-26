@@ -31,14 +31,15 @@ class printCities(object):
 		for city in object:
 			print str(city[0]) + "\t" + str(city[1]) + "\t" + str(city[2])
 
-def getDist(loc1, loc2):
-	x1 = loc1[0]
-	x2 = loc2[0]
-	y1 = loc1[1]
-	y2 = loc2[1]
-	dist = int(round(math.sqrt((X2 - x1)**2 + (y2 - y1)**2)))
+def getDist(object):
+	def __init__(self, object):
+		x1 = loc1[0]
+		x2 = loc2[0]
+		y1 = loc1[1]
+		y2 = loc2[1]
+		dist = int(round(math.sqrt((X2 - x1)**2 + (y2 - y1)**2)))
 
-	return dist
+		return dist
 
 # Notes on Multithreading tsp01.py
 # Import the list of cities.  

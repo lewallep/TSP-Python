@@ -1,5 +1,5 @@
 #!/usr/bin/python
-import sys, math, re, time, os
+import sys, math, re, time, os, copy
 import multiprocessing as mp
 import tsp01_tp
 from multiprocessing import Process, Queue
@@ -119,11 +119,78 @@ def defineSectors(minMax):
 	return sectorExtents
 
 def sortCitiesInSector(citiesLocalSector):
-	print len(citiesLocalSector)
+	#Iterate through each city to test all of the possible combinations in the sector.
+	#Keep the shortest path for each sector.
+	sectorTourLength = 0
+	sectorTour = []
+	tourStart = 1		#Using one to correlate with the indexes of each city. Incremented until 
 
-	citiesLocalSorted = citiesLocalSector
+	dist = sys.maxint
+	distNext = sys.maxint
+	bestSoFar = sys.maxint
+	nextCityIndex = -1
+	curCityIndex = -1
 
-	return citiesLocalSorted
+	curCity = citiesLocalSector[1]
+	nextCity = citiesLocalSector[2]
+
+	# curTour is the tour for each starting city possiblity.
+	curTour = []
+	tempBest = curCity
+	cityVisitedIndex = -1
+
+	# Index marker which always starts at the beginning of the list and works though all of the elements
+	# Starting at index 1 skips the identifier for the thread at the beginning of the data structure
+	nextIterator = 1
+
+#	print "citiesLocalSector: " + str(citiesLocalSector)
+#	print "citiesLocalSector Length: " + str(len(citiesLocalSector))
+
+	while tourStart < len(citiesLocalSector):
+#		print "tourStart: " + str(tourStart)
+		sectorNotVisited = copy.deepcopy(citiesLocalSector)
+		curCityIndex = tourStart
+		curCity = citiesLocalSector[curCityIndex]
+		curTour.append(curCity)
+
+		while len(sectorNotVisited) != 1:
+			# While loop through the remaining cities to determin the closest.
+			nextCityIndex = 1
+			
+			while nextCityIndex < len(sectorNotVisited):	
+				if curCityIndex != nextCityIndex:
+					nextCity = sectorNotVisited[nextCityIndex]
+					dist = int(round(math.sqrt((nextCity[1] - curCity[1])**2 + (nextCity[2] - curCity[2])**2)))
+
+					if dist < distNext:
+#						print "dist: " + str(dist)
+						distNext = dist
+						tempBest = sectorNotVisited[nextCityIndex]
+						cityVistedIndex = nextCityIndex
+#						print "temp best: " + str(tempBest)
+
+				nextCityIndex += 1
+				dist = sys.maxint
+				distNext = sys.maxint
+
+			# Save the closest neighbor
+			curTour.append(tempBest)
+#			print "curTour: " + str(curTour)
+#			print 
+			# Modify the line below with the index of the next closest city.
+			# have this line after the next city to visit is actually visited.
+			del sectorNotVisited[cityVisitedIndex]
+
+		sectorTour = copy.deepcopy(curTour)
+		curTour = []
+		tourStart += 1
+		
+
+
+
+	
+	# This is a placeholder until I finish the logic.
+	return sectorTour
 
 def organizeCitiesBySector(citySectors, fullCityList, q, curSector):
 	# Declare the container to hold the cities for the designed sector
@@ -153,8 +220,10 @@ def organizeCities(citySectors, fullCityList, sectorCount):
 
 	for i in range(0, sectorCount):	
 		curSector = i
-		p = mp.Process(target = organizeCitiesBySector, args = (citySectors, fullCityList, q, curSector, ))
+		p = Process(target = organizeCitiesBySector, args = (citySectors, fullCityList, q, curSector, ))
 		p.start()
+
+	for i in range(0, sectorCount):
 		allCitiesSectors.append(q.get())
 
 	for i in range(1, sectorCount):

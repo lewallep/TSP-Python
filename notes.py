@@ -26,3 +26,6 @@ for i in range(0, len(sectorExtents)):
 	print "secMinY: " + str(sectorExtents[i].secMinY)
 	print "secMaxY: " + str(sectorExtents[i].secMaxY)
 	print
+
+
+dist = int(round(math.sqrt((cityTwo[1] - cityOne[1])**2 + (cityTwo[2] - cityOne[2])**2)))
