@@ -2,6 +2,7 @@
 import sys, math, re, time, os, copy
 import multiprocessing as mp
 import tsp01_tp
+import tsp01_st
 from multiprocessing import Process, Queue
 
 class minMax(object):
@@ -139,6 +140,9 @@ def sortCitiesInSector(citiesLocalSector):
     tempBest = curCity
     cityVisitedIndex = -1
 
+    tourDist = 0        # The current tour distance.
+    bestTourDist = sys.maxint   # The best sector tour distance.
+
     # Index marker which always starts at the beginning of the list and works though all of the elements
     # Starting at index 1 skips the identifier for the thread at the beginning of the data structure
     nextIterator = 1
@@ -152,9 +156,6 @@ def sortCitiesInSector(citiesLocalSector):
         curCityIndex = tourStart
         curCity = citiesLocalSector[curCityIndex]
         curTour.append(curCity)
-        
-        tourDist = 0		# The current tour distance.
-        bestTourDist = sys.maxint	# The best sector tour distance.
 
         while len(sectorNotVisited) != 1:
             # While loop through the remaining cities to determin the closest.
@@ -174,38 +175,25 @@ def sortCitiesInSector(citiesLocalSector):
 
                 # Appending the current city distance
                 tourDist += distNext
-                print "pid: " + str(os.getpid)
-                print "tourDist: " + str(tourDist)
-                print
 
                 # Resetting the temporary distances for tour.
                 dist = sys.maxint
                 distNext = sys.maxint
 
-                if tourDist < bestTourDist:
-                	bestTourDist = tourDist
-
-                tourDist = 0
-
             # Save the closest neighbor
             curTour.append(tempBest)
-#           print "curTour: " + str(curTour)
-#           print 
-            # Modify the line below with the index of the next closest city.
-            # have this line after the next city to visit is actually visited.
+            # Deleting the city visited to remove from the list for the next closest neighbor selection.
             del sectorNotVisited[cityVisitedIndex]
 
-        print "bestTourDist: " +str(bestTourDist)
-        print
+        if tourDist < bestTourDist:
+            bestTourDist = tourDist
 
+        tourDist = 0
         sectorTour = copy.deepcopy(curTour)
         curTour = []
         tourStart += 1
-        
+    # End of outermost while loop.
 
-
-
-    
     # This is a placeholder until I finish the logic.
     return sectorTour
 
@@ -264,24 +252,29 @@ def main(args):
     numCities = len(fullCityList)
     print "The number of cities is is " + str(numCities)
 
-    # test print to ensure all of the cities were imported in the proper format.
-    # tsp01_tp.printCities(fullCityList)
+    if numCities < 51:
+        print "The number of cities was less than 50." 
+        print "Printing the number of cities and exiting."
+        print 
+        print "This explanation is going to be replaced with a single threaded"
+        print "functionality for testing purpouses to ensure my tour distance and"
+        print "tour path is functional in a single threaded environment."
+        print
 
-    #Find the overall extents of the city list.
-    overallMinMax = findExtents(fullCityList)
+        tsp01_st.singleThreadedTour(fullCityList)
+        print 
+    else:
+        #Find the overall extents of the city list.
+        overallMinMax = findExtents(fullCityList)
 
-    # Define the 
-    citySectors = defineSectors(overallMinMax)
+        # Define the 
+        citySectors = defineSectors(overallMinMax)
 
-    ## testing classes
-    # tsp01_tp.printSectors(citiesDistributed)
-    # tsp01_tp.printExtents(overallMinMax)
+        citiesSectorOrganized = organizeCities(citySectors, fullCityList, sectorCount)
 
-    citiesSectorOrganized = organizeCities(citySectors, fullCityList, sectorCount)
-
-    #Print the final parting message
-    print
-    print "End of Line.  I oh so love Aliens."
+        #Print the final parting message
+        print
+        print "End of Line.  I oh so love Aliens."
 
 if __name__ == '__main__':
     main(sys.argv)
