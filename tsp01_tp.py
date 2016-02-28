@@ -31,6 +31,11 @@ class printCities(object):
         for city in object:
             print str(city[0]) + "\t" + str(city[1]) + "\t" + str(city[2])
 
+
+
+
+
+
 def getDist(object):
     def __init__(self, object):
         x1 = loc1[0]

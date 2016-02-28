@@ -1,84 +1,45 @@
 #!/usr/bin/python
-import sys, math, re, time, copy
+import sys, math, re, time, copy, os
+import cities
 
 # This group of classes encapsulates my distance finding algorithm
 # for a single threaded environment.  
 
-def singleThreadedTour(object):
-    #Iterate through each city to test all of the possible combinations in the sector.
-    #Keep the shortest path for each sector.
-    sectorTourLength = 0
-    sectorTour = []
-    tourStart = 0       
+def singleThreadedTour(cityList):
+	numCities = len(cityList)
+	nextCityIndex = 0
 
-    dist = sys.maxint
-    distNext = sys.maxint
-    bestSoFar = sys.maxint
-    nextCityIndex = -1
-    curCityIndex = -1
+	# Reforactoring to change all of the cities to individual objects instead of tuples so the distance
+	# To the next city can be saved in the object.
+	cityListObj = cities.CityTupToObj(cityList)
 
-    curCity = object[1]
-    nextCity = object[2]
-
-    # curTour is the tour for each starting city possiblity.
-    curTour = []
-    tempBest = curCity
-    cityVisitedIndex = -1
-
-    tourDist = 0        # The current tour distance.
-    bestTourDist = sys.maxint   # The best sector tour distance.
-
-    # Index marker which always starts at the beginning of the list and works though all of the elements
-    # Starting at index 1 skips the identifier for the thread at the beginning of the data structure
-    nextIterator = 0
-
-    print "tourDist before while loops: " + str(tourDist)
-    print "num cities: " + str(len(object))
-    print "object: "
-    print str(object)
-    print
+	# Test print function only
+	# cities.printObjCities(cityListObj)
 
 
-    while tourStart < len(object):
-        sectorNotVisited = copy.deepcopy(object)
-        curCityIndex = tourStart
-        curCity = object[curCityIndex]
-        curTour.append(curCity)
+	# Variables to keep track of tour length.
+	curTour = sys.maxint
+	bestTourSoFar = sys.maxint
 
-        while len(sectorNotVisited) > 0:
-            nextCityIndex = 1
-            
-            while nextCityIndex < len(sectorNotVisited):    
-                if curCityIndex != nextCityIndex:
-                    nextCity = sectorNotVisited[nextCityIndex]
-                    dist = int(round(math.sqrt((nextCity[1] - curCity[1])**2 + (nextCity[2] - curCity[2])**2)))
+	# Iterate through all of the different cities to find if there is a best starting position.
+	for i in range(0, numCities):
+		curStartCity = i
+		citiesNotVisited = copy.deepcopy(cityListObj)
+		# For each start position find the best tour.
+		while len(citiesNotVisited) > 0:
+			curCity = curStartCity
+			
+			for potentialNextCity in range(0, len(citiesNotVisited)):
+				if potentialNextCity == curCity:
+					print "I have found the current city and am skipping over it"
+					print "The value of j is: " + str(potentialNextCity)
+					potentialNextCity += 1
+				else:
+					print "else curCity: " + str(curCity)
 
-                    if dist < distNext:
-                        distNext = dist
-                        tempBest = sectorNotVisited[nextCityIndex]
-                        cityVistedIndex = nextCityIndex
+					cities.distNextCity(citiesNotVisited, curCity, potentialNextCity)
 
-                nextCityIndex += 1
-                # Appending the current city distance
-                # print "distNext: " + str(distNext)
-                tourDist += distNext
-                # Resetting the temporary distances for tour.
-                dist = sys.maxint
-                distNext = sys.maxint
-                # print "tourDist: " + str(tourDist)
-
-            # Save the closest neighbor
-            curTour.append(tempBest)
-            # Deleting the city visited to remove from the list for the next closest neighbor selection.
-            del sectorNotVisited[cityVisitedIndex]
-
-        if tourDist < bestTourDist:
-            bestTourDist = tourDist
-
-        tourDist = 0
-        sectorTour = copy.deepcopy(curTour)
-        curTour = []
-        tourStart += 1
-    # End of outermost while loop.
-    print str(sectorTour)
-	    
+			del citiesNotVisited[len(citiesNotVisited) - 1]
+			print "citiesNotVisited len: " + str(len(citiesNotVisited))
+			print
+		print "At the end of the outer loop."
