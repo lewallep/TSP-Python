@@ -6,7 +6,7 @@ class City:
 		self.index = index
 		self.x = xCoord
 		self.y = yCoord
-		self.distNext = distNext
+		self.dist = distNext
 
 # Accepts a list of tuples of the type cities.
 # Outputs a list of City objects.
@@ -27,11 +27,30 @@ def printObjCities(cities):
 	print "Index    X Coordinate    Y Coordinate  Distance to the next city to visit."
 	for i in range(0, len(cities)):
 		print str(cities[i].index) + "    " + str(cities[i].x) + "    " + str(cities[i].y) + \
-		"    " + str(cities[i].distNext) 
+		"    " + str(cities[i].dist) 
 
 # This function must take a city object as defined above.
 def distNextCity(city, curCity, nextCity):
+
+	print "curCity index: " + str(city[curCity].index)
 	print "Next city index: " + str(city[nextCity].index)
 	print "Next city xCoord: " + str(city[nextCity].x)
 	print "Next city yCoord: " + str(city[nextCity].y)
 	print
+
+	dist = int(round(math.sqrt((city[nextCity].x - city[curCity].x)**2 + \
+		(city[nextCity].y - city[curCity].y)**2)))
+
+	print "dist: " + str(dist)
+
+	return dist
+
+# Takes two city objects.  
+# One is the current city object and the other is the 
+# next city to be evaluated to see if it is the closest neighbor.
+def distNextCityV2(curCity, nextCity):
+	dist = int(round(math.sqrt((nextCity.x - curCity.x)**2 + \
+		(nextCity.y - curCity.y)**2)))
+
+	print "dist: " + str(dist)
+	return dist

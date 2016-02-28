@@ -275,6 +275,9 @@ def main(args):
         #Print the final parting message
         print
         print "End of Line.  I oh so love Aliens."
+        print 
+        print
+        print
 
 if __name__ == '__main__':
     main(sys.argv)

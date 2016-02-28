@@ -69,3 +69,8 @@ dist = int(round(math.sqrt((cityTwo[1] - cityOne[1])**2 + (cityTwo[2] - cityOne[
 			nextCityIndex = 0
 
 		print
+
+
+
+3 913 933
+4 632 678
