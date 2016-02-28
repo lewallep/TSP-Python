@@ -34,6 +34,8 @@ def singleThreadedTour(cityList):
 		bestTourSoFar = sys.maxint
 
 		curStartCity = i 	#integer
+		print "currentStartCity: " + str(curStartCity)
+		print
 		citiesNotVisited = copy.deepcopy(cityListObj)
 		curCity = curStartCity	# integer
 		curTour.append(citiesNotVisited[curCity])
@@ -41,7 +43,7 @@ def singleThreadedTour(cityList):
 		del citiesNotVisited[curCity]
 		
 		# For each start position find the best tour.
-		while len(curTour) <= len(citiesNotVisited):
+		while len(curTour) < numCities:
 			# curTour.append(citiesNotVisited[curCity])
 			while cityTest < len(citiesNotVisited):
 				#print "Length citiesNotVisited beginning of loop: " + str(len(citiesNotVisited))
@@ -78,7 +80,7 @@ def singleThreadedTour(cityList):
 				print str(city.index) + "   " + str(city.x) + "   " +\
 					str(city.y) + "   " + str(city.dist)
 
-		curTour.append(citiesNotVisited[0])
+		# curTour.append(citiesNotVisited[0])
 		print "curTour length: " + str(len(curTour))
 		curTour[len(curTour)-2].dist = cities.distNextCityV2(curTour[len(curTour)-2], curTour[len(curTour)-1])
 		
