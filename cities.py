@@ -51,6 +51,5 @@ def distNextCity(city, curCity, nextCity):
 def distNextCityV2(curCity, nextCity):
 	dist = int(round(math.sqrt((nextCity.x - curCity.x)**2 + \
 		(nextCity.y - curCity.y)**2)))
-
-	print "dist: " + str(dist)
+	
 	return dist

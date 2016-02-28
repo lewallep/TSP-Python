@@ -41,10 +41,10 @@ def singleThreadedTour(cityList):
 		del citiesNotVisited[curCity]
 		
 		# For each start position find the best tour.
-		while len(curTour) < len(citiesNotVisited):
+		while len(curTour) <= len(citiesNotVisited):
 			# curTour.append(citiesNotVisited[curCity])
 			while cityTest < len(citiesNotVisited):
-				print "Length citiesNotVisited beginning of loop: " + str(len(citiesNotVisited))
+				#print "Length citiesNotVisited beginning of loop: " + str(len(citiesNotVisited))
 				#print "cities not visited curCity.index: " + str(citiesNotVisited[curCity].index)
 				print "curCity: " + str(curCity)
 				print "cityTest: " + str(cityTest)
@@ -53,22 +53,24 @@ def singleThreadedTour(cityList):
 				dist = cities.distNextCityV2(curCityObj, nextCityObj)
 				print "nextBestDist: " + str(nextBestDist)
 				print "dist: " + str(dist)
-				print
 				if dist < nextBestDist:
 					nextBestDist = dist
 					bestNeighborIndex = cityTest
 					print "Found a closer neighbor.  Updated current best distance."
-					# print "bestNeighborIndex = " + str(bestNeighborIndex)
+					print "bestNeighborIndex = " + str(bestNeighborIndex)
+					print
 				cityTest += 1
 			
 			curTour[len(curTour)-1].dist = nextBestDist
 			curTour.append(citiesNotVisited[bestNeighborIndex])
+			curTourDist += nextBestDist
+
 			curCityObj = curTour[len(curTour)-1]
 			nextBestDist = sys.maxint
 			curCity = bestNeighborIndex
 			cityTest = 0
-			nextBestDist = sys.maxint
 			dist = sys.maxint
+			print "bestNeighborIndex before delete: " + str(bestNeighborIndex)
 			del citiesNotVisited[bestNeighborIndex]
 
 			print "Length citiesNotVisited: " + str(len(citiesNotVisited))
@@ -77,13 +79,19 @@ def singleThreadedTour(cityList):
 					str(city.y) + "   " + str(city.dist)
 
 		curTour.append(citiesNotVisited[0])
-		curTour[len(curTour)-2].dist = cities.distNextCityV2(curTour[numCities-2], curTour[numCities-1])
-		print
+		print "curTour length: " + str(len(curTour))
+		curTour[len(curTour)-2].dist = cities.distNextCityV2(curTour[len(curTour)-2], curTour[len(curTour)-1])
+		
+		# Testing the length of the current tour
+		print "number of cities: " + str(numCities)
+		curTourDist += curTour[len(curTour)-2].dist
+
 		for city in curTour:
 			print str(city.index) + "   " + str(city.x) + "   " +\
 				str(city.y) + "   " + str(city.dist)
 
 
-
+		print "curTourDist: " + str(curTourDist)
+		print
 		# Resetting the tour list for the next start city.	
 		curTour = []
