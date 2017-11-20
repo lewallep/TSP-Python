@@ -68,7 +68,7 @@ def defineSectors(minMax):
     # This function will calculate the number of available processors and stuff
     # it into a 2D list to pass around to other functions.
     numProcs = mp.cpu_count()
-    print "The processor count is: " + str(numProcs)
+    print("The processor count is: " + str(numProcs))
 
     divisor = 2
 
@@ -235,14 +235,14 @@ def organizeCities(citySectors, fullCityList, sectorCount):
         p.join()
 
     for i in range(0, sectorCount):
-        print allCitiesSectors[i]
+        print(allCitiesSectors[i])
 
     return "Super organized.  Oh yeeeea!"
 
 def main(args):
     #Introduction message.
-    print "I have run my main function.  Wow. . . "
-    print
+    print("I have run my main function.  Wow. . . ")
+    print()
 
     # For v1.0 the sector count will always equal the cpu count.
     sectorCount = mp.cpu_count()
@@ -250,19 +250,19 @@ def main(args):
     fullCityList = importCities(args[1])
 
     numCities = len(fullCityList)
-    print "The number of cities is is " + str(numCities)
+    print("The number of cities is is " + str(numCities))
 
     if numCities < 51:
-        print "The number of cities was less than 50." 
-        print "Printing the number of cities and exiting."
-        print 
-        print "This explanation is going to be replaced with a single threaded"
-        print "functionality for testing purpouses to ensure my tour distance and"
-        print "tour path is functional in a single threaded environment."
-        print
+        print("The number of cities was less than 50.") 
+        print("Printing the number of cities and exiting.")
+        print() 
+        print("This explanation is going to be replaced with a single threaded")
+        print("functionality for testing purpouses to ensure my tour distance and")
+        print("tour path is functional in a single threaded environment.")
+        print()
 
         tsp01_st.singleThreadedTour(fullCityList)
-        print 
+        print() 
     else:
         #Find the overall extents of the city list.
         overallMinMax = findExtents(fullCityList)
@@ -273,11 +273,11 @@ def main(args):
         citiesSectorOrganized = organizeCities(citySectors, fullCityList, sectorCount)
 
         #Print the final parting message
-        print
-        print "End of Line.  I oh so love Aliens."
-        print 
-        print
-        print
+        print()
+        print("End of Line.  I oh so love Aliens.")
+        print()
+        print()
+        print()
 
 if __name__ == '__main__':
     main(sys.argv)

@@ -9,31 +9,27 @@ import sys, math, re, time
 class printSectors(object):
     def __init__(self, object):
         for i in range(0, len(object)):
-            print "i = " + str(i)
-            print "secMinX: " + str(object[i].secMinX)
-            print "secMaxX: " + str(object[i].secMaxX)
-            print "secMinY: " + str(object[i].secMinY)
-            print "secMaxY: " + str(object[i].secMaxY)
+            print("i = " + str(i))
+            print("secMinX: " + str(object[i].secMinX))
+            print("secMaxX: " + str(object[i].secMaxX))
+            print("secMinY: " + str(object[i].secMinY))
+            print("secMaxY: " + str(object[i].secMaxY))
             print
 
 class printExtents(object):
     def __init__(self, object):
-        print
-        print "MIN X : " + str(object.minX)
-        print "MAX X : " + str(object.maxX)
-        print
-        print "MIN Y : " + str(object.minY)
-        print "MAX Y : " + str(object.maxY)
-        print
+        print()
+        print("MIN X : " + str(object.minX))
+        print("MAX X : " + str(object.maxX))
+        print()
+        print("MIN Y : " + str(object.minY))
+        print("MAX Y : " + str(object.maxY))
+        print()
 
 class printCities(object):
     def __init__(self, object):
         for city in object:
-            print str(city[0]) + "\t" + str(city[1]) + "\t" + str(city[2])
-
-
-
-
+            print(str(city[0]) + "\t" + str(city[1]) + "\t" + str(city[2]))
 
 
 def getDist(object):

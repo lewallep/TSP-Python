@@ -12,7 +12,7 @@ class City:
 # Outputs a list of City objects.
 def CityTupToObj(cityList):
 	numCities = len(cityList)
-	print "The number of cities in CitTupToObj " + str(numCities)
+	print("The number of cities in CitTupToObj " + str(numCities))
 
 	cityListObjects = []
 
@@ -23,25 +23,24 @@ def CityTupToObj(cityList):
 
 # Quick function to print out the list of city objects after conversion from tuples.
 def printObjCities(cities):
-	print "The cities will be printed with the following columns."
-	print "Index    X Coordinate    Y Coordinate  Distance to the next city to visit."
+	print("The cities will be printed with the following columns.")
+	print("Index    X Coordinate    Y Coordinate  Distance to the next city to visit.")
 	for i in range(0, len(cities)):
-		print str(cities[i].index) + "    " + str(cities[i].x) + "    " + str(cities[i].y) + \
-		"    " + str(cities[i].dist) 
+		print(str(cities[i].index) + "    " + str(cities[i].x) + "    " + str(cities[i].y) + \
+		"    " + str(cities[i].dist)) 
 
 # This function must take a city object as defined above.
 def distNextCity(city, curCity, nextCity):
-
-	print "curCity index: " + str(city[curCity].index)
-	print "Next city index: " + str(city[nextCity].index)
-	print "Next city xCoord: " + str(city[nextCity].x)
-	print "Next city yCoord: " + str(city[nextCity].y)
-	print
+	print("curCity index: " + str(city[curCity].index))
+	print("Next city index: " + str(city[nextCity].index))
+	print("Next city xCoord: " + str(city[nextCity].x))
+	print("Next city yCoord: " + str(city[nextCity].y))
+	print()
 
 	dist = int(round(math.sqrt((city[nextCity].x - city[curCity].x)**2 + \
 		(city[nextCity].y - city[curCity].y)**2)))
 
-	print "dist: " + str(dist)
+	print("dist: " + str(dist))
 
 	return dist
 
