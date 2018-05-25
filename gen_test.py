@@ -91,3 +91,4 @@ if __name__ == '__main__':
     testArgs = argsDict()
     # print(testArgs)
     makeFile(testArgs)
+    print("Added these files to the github repository.")
