@@ -61,14 +61,41 @@ def _fixDuplicateCities(f, args):
     f.seek(0)   # using the same file descriptor settings and going back to the start of file.
     firstLine = f.readline()    # Instead of seeking to the next line I just grab and not use
     cities = {}
-    City = namedtuple("City", ["x", "y"])
-    c = City(x = 100, y = 200)
-    cities[c] = 1
-    print(cities)
-    if City(x = 100, y = 200) in cities:
-        print("Found a city!")
-        print(cities[c])
+    City = namedtuple("City", ["x", "y"]) # the value of the map element is the city id
 
+    for i in range(args["numcities"]):
+        startLine = f.tell()
+        line = f.readline().strip()
+        endLine = f.tell()
+        tokens = line.split("\t")
+        c = City(x = tokens[1], y = tokens[2])
+        if c in cities:
+            print("Found a duplicate x y coordinates: " + str(c))
+
+        else:
+            cities[c] = tokens[0]   # Add a City named tuple element with the id for the map elem value.
+
+    print("len(cities): " + str(len(cities)))
+    print("cities: ")
+    for city in cities.items():
+        print(city)
+
+
+
+
+    # Practice incrementing a single named tuple.
+    # c = City(x = 100, y = 200)
+    # cities[c] = 1
+    # if City(x = 100, y = 200) in cities:
+    #     cx = c.x
+    #     cy = c.y + 1
+    #     print(cx)
+    #     print(cy)
+
+    #     cIncremented = City(x = cx, y = cy)
+    #     print(cIncremented)
+
+    
     # Deprecating as this removed specific cities.
     # for i in range(args["numcities"]):
     #     line = f.readline().strip() 
@@ -83,12 +110,7 @@ def _fixDuplicateCities(f, args):
     #             tokens[2] = str(yval)
     #             print("tokens after incrementing y: " + str(tokens))
 
-
-    print("len(cities): " + str(len(cities)))
-
 if __name__ == '__main__':
     print("Generating cities.")
     testArgs = argsDict()
-    # print(testArgs)
     makeFile(testArgs)
-    print("Added these files to the github repository.")
