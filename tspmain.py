@@ -166,3 +166,5 @@ if __name__ == '__main__':
 	results = singleThreadedTsp(cities)
 	if checkResultShortest(results):
 		print("All good in the hood.")
+
+#  Merging to master.  Delete comment later.
