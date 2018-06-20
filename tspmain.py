@@ -21,7 +21,8 @@ if __name__ == '__main__':
 	elif sys.argv[2] == "mc":
 		print("Inside the mc argument")
 		tspmc = tspsinglethreadmc.TspSingleThreadMc
-		#results = tspmc.singleThreadMultiCore(cities)
+		tspmc.tourmc(cities)
+
 
 	# if tspu.checkResultShortest(results):
 	# 	print("All good in the hood.")

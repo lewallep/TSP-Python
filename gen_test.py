@@ -31,7 +31,7 @@ def argsDict():
 # If not throw a notificatio, loop and reenter the args.
 def verifyArgs(args):
     numCities = int(args["numcities"])
-    if int(args["xmax"]) * int(args["ymax"]) < numCities * numCities:
+    if int(args["xmax"]) * int(args["ymax"]) > numCities * numCities:
         print("The total number of x and y values for cities is greater than")
         print("The numcities value entered.")
         print("Please increase the numcities value or decreate the values of")

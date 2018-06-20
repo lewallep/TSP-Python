@@ -2,6 +2,8 @@
 import sys
 import tspsinglethread
 import multiprocessing
+from multiprocessing import Queue, Process
+import math
 
 # Start a different thread for each cpu.
 # Use queues for communication to each individual thread out to the parent thread.
@@ -15,8 +17,21 @@ class TspSingleThreadMc:
 	# The function to call for each individual process.
 	# Prereque is to have a range of cities from the list passed to it.
 	# Deep copying will happen in the base tour.
-	def tourSingle(threadCities):	
+	def tourSingle(qr, threadCities):
+		print("tourSingle()")
+		print("threadedCities len(): " + str(len(threadCities)))
 
-	def tourmc(numprocs, cities):
+	def tourmc(cities):
+		numprocs = TspSingleThreadMc.numprocs
 		qr = Queue()	#Results from the different processes
-		p = Process()
+		numCities = len(cities)
+		threadCities = cities[:math.floor(len(cities)/numprocs)]
+		
+		print("cities length: " + str(len(cities)))
+		for i in range(0, numprocs):
+			print("This is where I will need to put the process.stat()")
+			p = Process(target=TspSingleThreadMc.tourSingle, args=(qr, threadCities))
+			p.start()
+
+		for i in range(0, numprocs):
+			p.join()
