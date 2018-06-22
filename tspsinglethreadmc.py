@@ -12,9 +12,7 @@ class TspSingleThreadMc:
 	# Count the amaount of available cpus.
 	numprocs = multiprocessing.cpu_count()
 
-
 	def 
-
 
 	# The function to call for each individual process.
 	# Prereque is to have a range of cities from the list passed to it.
