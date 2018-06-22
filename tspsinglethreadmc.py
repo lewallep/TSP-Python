@@ -64,3 +64,5 @@ class TspSingleThreadMc:
 		print(len(results))
 		return results
 		# ssh enabled.  It is like shake and bake with Ricky bobby but not.
+		# All of this should be refactored to instantiated objects instead of the singular class I have now.  
+		# This might also help with the pickling issue of the named tuple.
