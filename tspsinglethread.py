@@ -36,34 +36,6 @@ class TspSingleThread:
 		# print(tour)
 		return tourDistance, tour
 
-	# wrapper loop that takes iterates over the import cases and passes in the start ID
-	# Returns a list with all of the tours and shortest tour.
-	def singleThreadedTsp(cities):
-		print("singleThreadedTsp()")
-		# print(cities)
-		shortestDist = sys.maxsize
-		curDistance = sys.maxsize
-		curTour = []
-		shortestTour = []
-		results = [] # May not be needed
-
-		#print(shortestTour)
-		for i in range(len(cities)):
-			curDistance, curTour = TspSingleThread.tour(cities, i)
-			#print("curTour: " + str(curTour))
-			print("curDistance: " + str(curDistance))
-			curTour.insert(0, curDistance)
-			results.append(curTour)
-			if curDistance < shortestDist:
-				shortestDist = curDistance
-				shortestTour = curTour
-
-		#sprint("shortestDist: " + str(shortestDist))
-		print("shortestTour: " + str(shortestTour))
-		#print("results: ")
-		#print(results)
-		return results
-
 	# Find distance to the next closest city
 	# Returns the distance to the next city and the ID of the next cloest city.
 	def nextCityDist(localCities, curCity):
@@ -89,3 +61,30 @@ class TspSingleThread:
 				index = i
 
 		return nextCity, distToNext, index
+
+	# wrapper loop that takes iterates over the import cases and passes in the start ID
+	# Returns a list with all of the tours and shortest tour.
+	def singleThreadedTsp(cities):
+		# print(cities)
+		shortestDist = sys.maxsize
+		curDistance = sys.maxsize
+		curTour = []
+		shortestTour = []
+		results = [] # May not be needed
+
+		#print(shortestTour)
+		for i in range(len(cities)):
+			curDistance, curTour = TspSingleThread.tour(cities, i)
+			#print("curTour: " + str(curTour))
+			# print("curDistance: " + str(curDistance))
+			curTour.insert(0, curDistance)
+			results.append(curTour)
+			if curDistance < shortestDist:
+				shortestDist = curDistance
+				shortestTour = curTour
+
+		#sprint("shortestDist: " + str(shortestDist))
+		# print("shortestTour: " + str(shortestTour))
+		#print("results: ")
+		#print(results)
+		return results

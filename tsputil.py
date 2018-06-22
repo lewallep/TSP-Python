@@ -3,12 +3,14 @@
 from collections import namedtuple
 import sys
 
+City = namedtuple("City", ["id", "x", "y"])
+
 class TspUtil:
 	# import the cities from the text file
 	# Returns a list of cities.  Cities = named tuple?
 	def importCase():
 		cities = []
-		City = namedtuple("City", ["id", "x", "y"])
+
 		with open(sys.argv[1], "r") as f:
 			line = f.readline().strip()
 			tokens = line.split("\t")
