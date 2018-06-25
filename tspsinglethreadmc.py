@@ -27,6 +27,7 @@ class TspSingleThreadMc:
 			curDistance, curTour = tspsinglethread.TspSingleThread.tour(cities, curStartCity)
 			curTour.insert(0, curDistance)
 			results.append(curTour)
+			print("i: %s 	curTour: %s" % (i, curTour[0]))
 			if curDistance < shortestDist:
 				shortestDist = curDistance
 				shortestTour = curTour
@@ -40,11 +41,11 @@ class TspSingleThreadMc:
 	def tourSingle(qr, startCities, cities):
 		# print("threadedCities len(): " + str(len(threadCities)))
 		results = TspSingleThreadMc.singleThreadedMc(startCities, cities)
-		# print("results: %s" % (results))
+		# print("tourSingle results length: %s" % (len(results)))
 		for i in range(len(startCities)):
+			# print("inside a single core results: " + str(results[i][0]))
 			qr.put(results[i])
-			# print("put a result into the queue")
-		# print("tourSingle() is finished.")
+		print("tourSingle() is finished.")
 
 	# Divides up the cities into different lists for each processor to have as close to an event amount as possible.
 	# Each list can only accept integers as arguments to the begining and end of the list.
@@ -77,11 +78,15 @@ class TspSingleThreadMc:
 			# print("citiesRemainder: " + str(citiesRemainder))
 			aId = bId	#Incrementing the start of the next list slice.
 
-		for i in range(numprocs):
+		for i in range(numCities):
 			results.append(qr.get())
 		
 		# print(results)
 		# print(len(results))
+		for i in range(numprocs):
+			p.join()
+
+		qr.close()
 		return results
 		# ssh enabled.  It is like shake and bake with Ricky bobby but not.
 		# All of this should be refactored to instantiated objects instead of the singular class I have now.  

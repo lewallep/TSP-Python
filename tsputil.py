@@ -75,7 +75,7 @@ class TspUtil:
 				shortest = results[i][0]
 				shortestTour = results[i]
 
-		print("shortest: %s" % (shortest))
 		print("shortestTour: ")
+		print("shortest: %s" % (shortest))
 		print(shortestTour)
 				
