@@ -12,6 +12,8 @@ class TspSingleThreadMc:
 	# Count the amaount of available cpus.
 	numprocs = multiprocessing.cpu_count()
 
+	# A copy of the singleThreadedTsp(cities) function but takes the start cities list as
+	# an argument along with the cities list.  
 	def 
 
 	# The function to call for each individual process.
