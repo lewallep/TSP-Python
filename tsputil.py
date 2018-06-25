@@ -62,3 +62,20 @@ class TspUtil:
 
 		# If this return statment is true no duplicate ID's found.
 		return True
+
+	# Finds the shortest tour overall from the dictionary of results.
+	# Does not recompute the tour.  Simply reads and stores the shortest tour index
+	# from the dict.
+	def findShortestTourOverall(results):
+		shortest = sys.maxsize
+		shortestTour = []
+		for i in range(len(results)):
+			print("%s" % (results[i][0]))
+			if results[i][0] < shortest:
+				shortest = results[i][0]
+				shortestTour = results[i]
+
+		print("shortest: %s" % (shortest))
+		print("shortestTour: ")
+		print(shortestTour)
+				

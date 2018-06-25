@@ -14,18 +14,36 @@ class TspSingleThreadMc:
 
 	# A copy of the singleThreadedTsp(cities) function but takes the start cities list as
 	# an argument along with the cities list.  
-	def 
+	def singleThreadedMc(startCities, cities):
+		shortestDist = sys.maxsize
+		curDistance = sys.maxsize
+		curTour = []
+		shortestTour = []
+		results = []
+		
+		for i in range(len(startCities)):
+			curStartCity = startCities[i].id
+			# print("startCities[i].id: %s" % (curStartCity))
+			curDistance, curTour = tspsinglethread.TspSingleThread.tour(cities, curStartCity)
+			curTour.insert(0, curDistance)
+			results.append(curTour)
+			if curDistance < shortestDist:
+				shortestDist = curDistance
+				shortestTour = curTour
+
+		return results
+
 
 	# The function to call for each individual process.
 	# Prereque is to have a range of cities from the list passed to it.
 	# Deep copying will happen in the base tour.
 	def tourSingle(qr, startCities, cities):
 		# print("threadedCities len(): " + str(len(threadCities)))
-		results = tspsinglethread.TspSingleThread.singleThreadedTsp(startCities)
+		results = TspSingleThreadMc.singleThreadedMc(startCities, cities)
 		# print("results: %s" % (results))
 		for i in range(len(startCities)):
 			qr.put(results[i])
-			print("put a result into the queue")
+			# print("put a result into the queue")
 		# print("tourSingle() is finished.")
 
 	# Divides up the cities into different lists for each processor to have as close to an event amount as possible.
@@ -62,8 +80,8 @@ class TspSingleThreadMc:
 		for i in range(numprocs):
 			results.append(qr.get())
 		
-		print(results)
-		print(len(results))
+		# print(results)
+		# print(len(results))
 		return results
 		# ssh enabled.  It is like shake and bake with Ricky bobby but not.
 		# All of this should be refactored to instantiated objects instead of the singular class I have now.  

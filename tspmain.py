@@ -24,5 +24,4 @@ if __name__ == '__main__':
 		results = tspmc.tourmc(cities)
 
 	if tspu.checkResultShortest(results):
-	 	print("All good in the hood.")
-	 	print(results)
+	 	tspu.findShortestTourOverall(results)
